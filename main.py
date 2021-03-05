@@ -21,9 +21,6 @@ def usage():
     print("\t1) Move cursor on object")
     print("\t2) Press 'g' to add tree, 'h' to add stone")
     print("\t3) Press Ctrl to end this part\n")
-    print("Then move your cursor to neutral position for you zombie and press 'm' ")
-    print("\t\t(better to move on water)")
-    print("Now you can go drink you tea and chill ^_^\n")
     print("You can set pause anytime by pressing 'p'")
     print("-------------------------------------------------------")
 
