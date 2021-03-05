@@ -2,7 +2,7 @@ from PIL import Image
 import pyautogui as pg
 from find_objects import analysis, find_exit
 
-from time import sleep, localtime, clock
+from time import sleep, localtime
 import keyboard
 
 # [wood, stone, trees, stones]
@@ -57,7 +57,7 @@ def work_with_keyboard(e):
 
 
 # try to break some objects
-def try_to_break(array):
+def try_to_break(array, name):
     if len(array) > 0:
         click(array[0][0], array[0][1])
         sleep(3)
@@ -65,6 +65,7 @@ def try_to_break(array):
         if find_exit(img):
             click(0, 0)
         else:
+            print(get_time() + 'Destroying new {}'.format(name))
             del array[0]
 
 
@@ -130,16 +131,22 @@ if __name__ == '__main__':
     while True:
         n += 1
 
+        #pause bot
         if pause:
             print(get_time() + "Paused")
             while pause:
                 sleep(1)
             print(get_time() + "UnPaused")
 
-        if n:
-            try_to_break(trees)
+        #try to destroy objects
+        if not n % 20:
+            try_to_break(trees, 'tree')
             sleep(3)
-            try_to_break(stones)
+            try_to_break(stones, 'stone')
+
+        #Check menu
+        if not n % 30 and find_exit(pg.screenshot()):
+            click(0, 0)
 
         run()
         sleep(3)

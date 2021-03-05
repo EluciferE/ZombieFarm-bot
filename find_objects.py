@@ -3,12 +3,10 @@ from PIL import Image
 wood = Image.open("img/wood.png")
 stone = Image.open("img/stone.png")
 chest = Image.open("img/chest.png")
-ai = Image.open("img/ai.png")
-menu = Image.open("img/menu.png")
 
 
 def close_color(c1, c2):
-    dif = 25
+    dif = 15
     r1, g1, b1 = c1[:3]
     r2, g2, b2 = c2[:3]
     if abs(r1 - r2) > dif:
@@ -50,8 +48,9 @@ def find_exit(img):
     sx, sy = img.size
     pix = img.load()
     menu_color = (255, 248, 221)
-    start_pos = int(((701/1920) * sx)), int((357/1080) * sy)
+    start_pos = int(((701 / 1920) * sx)), int((357 / 1080) * sy)
     for delta in range(10):
         if not close_color(pix[start_pos[0], start_pos[1] + delta], menu_color):
             return False
     return True
+
