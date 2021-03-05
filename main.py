@@ -1,16 +1,12 @@
 from PIL import Image
 import pyautogui as pg
+from find_objects import analysis
 
 from time import sleep, localtime
 import keyboard
 
-
 # [wood, stone, trees, stones]
-amounts = [0 for _ in range(4)]
-
-wood = Image.open("img/wood.png")
-stone = Image.open("img/stone.png")
-chest = Image.open("img/chest.png")
+amount = {'wood': 0, 'stone': 0, 'trees': 0, 'cobblestone': 0}
 
 trees = []
 stones = []
@@ -31,6 +27,8 @@ def usage():
     print("You can set pause anytime by pressing 'p'")
     print("-------------------------------------------------------")
 
+
+# Take some events like pause, add tree/stone and etc.
 
 def work_with_keyboard(e):
     global stage
@@ -59,57 +57,13 @@ def work_with_keyboard(e):
             end_adding_objects = True
 
 
+# return time like [hh:mm:ss]
 def get_time():
     t = localtime()
     hour = '0' * (2 - len(str(t[3]))) + str(t[3])
     minute = '0' * (2 - len(str(t[4]))) + str(t[4])
     sec = '0' * (2 - len(str(t[5]))) + str(t[5])
     return '[{}:{}:{}]\t'.format(hour, minute, sec)
-
-
-def close_color(c1, c2):
-    dif = 20
-    r1, g1, b1 = c1[:3]
-    r2, g2, b2 = c2[:3]
-    if abs(r1 - r2) > dif:
-        return False
-    if abs(g1 - g2) > dif:
-        return False
-    if abs(b1 - b2) > dif:
-        return False
-    return True
-
-
-def recognize(pix, x, y, obj):
-    obj_pix = obj.load()
-    ox, oy = obj.size
-
-    for delta_x in range(ox // 2):
-        for delta_y in range(oy // 2):
-            if not close_color(pix[x + delta_x, y + delta_y], obj_pix[delta_x, delta_y]):
-                return False
-
-    return True
-
-
-def analysis(pix, x, y):
-    obj = ''
-
-    if recognize(pix, x, y, wood):
-        obj = 'wood'
-        amounts[0] += 1
-    elif recognize(pix, x, y, stone):
-        obj = 'stone'
-        amounts[1] += 1
-    elif recognize(pix, x, y, chest):
-        obj = 'chest'
-
-    if obj != '':
-        print(get_time() + "Found {} on: {}, {}".format(obj, x, y))
-        click(x, y)
-        return True
-
-    return False
 
 
 def click(x, y):
@@ -121,6 +75,8 @@ def click(x, y):
     pg.moveTo(1, 1)
 
 
+# analysis every pixel and try to find objects
+
 def run():
     img = pg.screenshot()
     sx, sy = img.size
@@ -128,7 +84,14 @@ def run():
 
     for x in range(sx - 50):
         for y in range(sy - 50):
-            if analysis(pix, x, y) or pause:
+            obj = analysis(pix, x, y)
+            if obj != 'nothing':
+                click(x, y)
+                amount[obj] += 1
+                print(get_time() + 'Found ' + obj)
+                return
+
+            elif pause:
                 return
 
 
