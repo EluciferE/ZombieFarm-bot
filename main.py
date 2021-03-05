@@ -1,8 +1,8 @@
 from PIL import Image
 import pyautogui as pg
-from find_objects import analysis
+from find_objects import analysis, find_exit
 
-from time import sleep, localtime
+from time import sleep, localtime, clock
 import keyboard
 
 # [wood, stone, trees, stones]
@@ -29,7 +29,6 @@ def usage():
 
 
 # Take some events like pause, add tree/stone and etc.
-
 def work_with_keyboard(e):
     global stage
 
@@ -57,6 +56,19 @@ def work_with_keyboard(e):
             end_adding_objects = True
 
 
+# try to break some objects
+def try_to_break(array):
+    if len(array) > 0:
+        click(array[0][0], array[0][1])
+        sleep(3)
+        img = pg.screenshot()
+        if find_exit(img):
+            click(0, 0)
+        else:
+            del array[0]
+    print(array)
+
+
 # return time like [hh:mm:ss]
 def get_time():
     t = localtime()
@@ -76,7 +88,6 @@ def click(x, y):
 
 
 # analysis every pixel and try to find objects
-
 def run():
     img = pg.screenshot()
     sx, sy = img.size
@@ -114,13 +125,22 @@ if __name__ == '__main__':
 
     pause = False
     stage = 'game'
+
+    # number of iterations
+    n = 0
     while True:
+        n += 1
 
         if pause:
             print(get_time() + "Paused")
             while pause:
                 sleep(1)
             print(get_time() + "UnPaused")
+
+        if n:
+            try_to_break(trees)
+            sleep(3)
+            try_to_break(stones)
 
         run()
         sleep(3)
