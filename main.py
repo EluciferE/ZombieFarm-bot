@@ -4,12 +4,13 @@ import pyautogui as pg
 from time import sleep, localtime
 import keyboard
 
+
 # [wood, stone, trees, stones]
 amounts = [0 for _ in range(4)]
 
-wood = Image.open("wood.png")
-stone = Image.open("stone.png")
-chest = Image.open("chest.png")
+wood = Image.open("img/wood.png")
+stone = Image.open("img/stone.png")
+chest = Image.open("img/chest.png")
 
 trees = []
 stones = []
@@ -127,7 +128,7 @@ def run():
 
     for x in range(sx - 50):
         for y in range(sy - 50):
-            if analysis(pix, x, y):
+            if analysis(pix, x, y) or pause:
                 return
 
 
@@ -152,8 +153,11 @@ if __name__ == '__main__':
     stage = 'game'
     while True:
 
-        while pause:
-            sleep(2)
+        if pause:
+            print(get_time() + "Paused")
+            while pause:
+                sleep(1)
+            print(get_time() + "UnPaused")
 
         run()
         sleep(3)
