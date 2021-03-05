@@ -66,7 +66,6 @@ def try_to_break(array):
             click(0, 0)
         else:
             del array[0]
-    print(array)
 
 
 # return time like [hh:mm:ss]
