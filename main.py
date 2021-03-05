@@ -5,6 +5,9 @@ from find_objects import analysis, find_exit
 from time import sleep, localtime
 import keyboard
 
+pg.FAILSAFE = False
+
+
 # [wood, stone, trees, stones]
 amount = {'wood': 0, 'stone': 0, 'chest': 0, 'trees': 0, 'cobblestone': 0}
 
@@ -76,12 +79,16 @@ def get_time():
 
 
 def click(x, y):
-    # click on object
-    pg.moveTo(x + 5, y + 5)
-    pg.click()
+    try:
+        # click on object
+        pg.moveTo(x + 5, y + 5)
+        pg.click()
 
-    # move cursor to top left corner
-    pg.moveTo(1, 1)
+        # move cursor to top left corner
+        pg.moveTo(1, 1)
+
+    except Exception as error:
+        print("Хуйня, хуй знает из-за чего. Смотри блять:", error)
 
 
 # analysis every pixel and try to find objects
@@ -96,7 +103,6 @@ def run():
             if obj != 'nothing':
                 click(x, y)
                 amount[obj] += 1
-                print(get_time() + 'Found ' + obj)
                 return
 
             elif pause:
@@ -144,6 +150,13 @@ if __name__ == '__main__':
         # Check menu
         if not n % 5 and find_exit(pg.screenshot()):
             click(0, 0)
+        if not n % 20:
+            print("--------------------------------------------------------------------")
+            print("\t\t\t" + get_time())
+            print("\t\t\tCHECK RESULTS")
+            print("Woods: {}\t\tStones: {}".format(amount['wood'], amount['stone']))
+            print("Trees: {}\t\tCobblestones: {}".format(amount['trees'], amount['cobblestone']))
+            print('--------------------------------------------------------------------')
 
         run()
         sleep(3)
