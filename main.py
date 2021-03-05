@@ -6,7 +6,7 @@ from time import sleep, localtime
 import keyboard
 
 # [wood, stone, trees, stones]
-amount = {'wood': 0, 'stone': 0, 'trees': 0, 'cobblestone': 0}
+amount = {'wood': 0, 'stone': 0, 'chest': 0, 'trees': 0, 'cobblestone': 0}
 
 trees = []
 stones = []
@@ -131,21 +131,21 @@ if __name__ == '__main__':
     while True:
         n += 1
 
-        #pause bot
+        # pause bot
         if pause:
             print(get_time() + "Paused")
             while pause:
                 sleep(1)
             print(get_time() + "UnPaused")
 
-        #try to destroy objects
-        if not n % 20:
+        # try to destroy objects
+        if not n % 10:
             try_to_break(trees, 'tree')
             sleep(3)
             try_to_break(stones, 'stone')
 
-        #Check menu
-        if not n % 30 and find_exit(pg.screenshot()):
+        # Check menu
+        if not n % 5 and find_exit(pg.screenshot()):
             click(0, 0)
 
         run()
