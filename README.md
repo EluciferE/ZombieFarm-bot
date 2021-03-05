@@ -1,6 +1,6 @@
 # ZombieFarm-bot
 
-This bot will take woods and stones from your farm while you are sleeping
+This bot will take woods and stones from your farm while you are sleeping.
 Bot also have queue of trees and cobblestones that you want to destroy
 
 
