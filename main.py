@@ -6,7 +6,7 @@ import keyboard
 
 pg.FAILSAFE = False
 
-amount = {'wood': 0, 'stone': 0, 'chest': 0, 'trees': 0, 'cobblestone': 0}
+amount = {'wood': 0, 'stone': 0, 'chest': 0, 'tree': 0, 'cobblestone': 0}
 
 trees = []
 stones = []
@@ -63,6 +63,7 @@ def try_to_break(array, name):
             click(0, 0)
         else:
             print(get_time() + 'Destroying new {}'.format(name))
+            amount[name] += 1
             del array[0]
 
 
@@ -89,7 +90,7 @@ def results():
     print("\t\t\t" + get_time())
     print("\t\t\tCHECK RESULTS")
     print("Woods: {}\t\tStones: {}".format(amount['wood'], amount['stone']))
-    print("Trees: {}\t\tCobblestones: {}".format(amount['trees'], amount['cobblestone']))
+    print("Trees: {}\t\tCobblestones: {}".format(amount['tree'], amount['cobblestone']))
     print('--------------------------------------------------------------------')
 
 
@@ -147,7 +148,7 @@ if __name__ == '__main__':
         if not n % 10:
             try_to_break(trees, 'tree')
             sleep(3)
-            try_to_break(stones, 'stone')
+            try_to_break(stones, 'cobblestone')
 
         # Check menu
         if not n % 5 and find_exit(pg.screenshot()):
